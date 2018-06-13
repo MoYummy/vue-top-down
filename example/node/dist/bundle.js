@@ -189,18 +189,10 @@ function normalizeComponent (
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 (function (global, factory) {
-  ( false ? undefined : _typeof2(exports)) === 'object' && typeof module !== 'undefined' ? factory(exports) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : undefined;
-})(undefined, function (exports) {
-  'use strict';
+   true ? factory(exports) :
+  undefined;
+}(this, (function (exports) { 'use strict';
 
   var VTD = {
     COMPONENT: 'vue-component',
@@ -208,22 +200,13 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
     ROOT: 'vtd-root',
     MAPPING: 'vtd-mapping',
     CLASS: 'clazz',
-    STYLE: 'vtd-style'
+    STYLE: 'vtd-style',
+    RENDER: 'vtd-render'
   };
 
-  var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
-    return typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
-  } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
-  };
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
-    } else {
-      obj[key] = value;
-    }return obj;
-  }
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
   function outerDom(outerHTML) {
     var mapping = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -309,44 +292,27 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
     }
   }
 
-  function _defineProperty$1(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
-    } else {
-      obj[key] = value;
-    }return obj;
-  }
+  function _defineProperty$1(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
   var VueTopDown = {
-    props: _defineProperty$1({}, VTD.OUTER_HTML, {
-      type: String,
-      default: ''
-    }),
     data: function data() {
       var _ref;
 
-      return _ref = {}, _defineProperty$1(_ref, VTD.ROOT, '*'), _defineProperty$1(_ref, VTD.MAPPING, {}), _ref;
-    },
-
-    computed: {
-      outerDom: function outerDom$$1() {
-        return outerDom(this[VTD.OUTER_HTML] ? this[VTD.OUTER_HTML] : this.$el.outerHTML, this[VTD.MAPPING], this[VTD.ROOT]);
-      }
+      return _ref = {}, _defineProperty$1(_ref, VTD.ROOT, '*'), _defineProperty$1(_ref, VTD.MAPPING, {}), _defineProperty$1(_ref, VTD.RENDER, null), _ref;
     },
     render: function render(h) {
-      return dom2render(h, this.outerDom);
+      if (this[VTD.RENDER]) {
+        return this[VTD.RENDER];
+      }
+      var od = outerDom(this.$el.outerHTML, this[VTD.MAPPING], this[VTD.ROOT]);
+      this[VTD.RENDER] = dom2render(h, od);
+      return this[VTD.RENDER];
     }
   };
 
   var _props;
 
-  function _defineProperty$2(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
-    } else {
-      obj[key] = value;
-    }return obj;
-  }
+  function _defineProperty$2(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
   var VueTopDownItem = {
     props: (_props = {}, _defineProperty$2(_props, VTD.OUTER_HTML, String), _defineProperty$2(_props, VTD.CLASS, Array), _defineProperty$2(_props, VTD.STYLE, String), _props),
@@ -358,7 +324,9 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
   exports.VTDConstants = VTD;
 
   Object.defineProperty(exports, '__esModule', { value: true });
-});
+
+})));
+
 
 /***/ }),
 /* 2 */
