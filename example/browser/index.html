@@ -1,16 +1,77 @@
 <!doctype html>
-<html>
+<html style="height: 100%; width: 100%;">
   <head>
+<style>
+body > .app {
+  height: 100%;
+}
+body header,
+body footer {
+  align-items: center;
+  background: silver;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  height: 3em;
+  justify-content: center;
+}
+body header {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+body header a {
+  padding: 0 0.5em;
+  text-decoration: none;
+}
+body .middle {
+  height: calc(100% - 6em);
+  width: 100%;
+}
+body .middle > .content {
+  align-items: center;
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+}
+</style>
   </head>
-  <body>
-    <div id=app></div>
-    <script src="https://unpkg.com/vue"></script>
-    <script src="https://unpkg.com/vue-top-down"></script>
-<script>
-document.getElementById('app').innerText =
-  JSON.stringify(Vue.version) +
-  JSON.stringify(VueTopDown.VueTopDown) +
-  JSON.stringify(VueTopDown.VueTopDownItem)
-</script>
+  <body style="height: 100%; width: 100%; margin: 0;">
+    <div class=app id=app>
+      <header class=header>This is the header</header>
+      <div class=middle>
+        <div class=content>
+          <h1>This is the title</h1>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is a paragraph</p>
+          <p>This is the end</p>
+        </div>
+      </div>
+      <footer class=footer>This is the footer</footer>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.1/dist/vue-router.js"></script>
+    <script src="https://unpkg.com/vue-top-down@0.2.0/dist/vue-top-down.umd.js"></script>
+    <script src="./index.js"></script>
   </body>
 </html>
