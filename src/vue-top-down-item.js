@@ -1,8 +1,10 @@
+import VTD from './constants'
+
 const VueTopDownItem = {
   props: {
-    outerHTML: String,
-    clazz: Array,
-    styles: String
+    [VTD.OUTER_HTML]: String,
+    [VTD.CLASS]: Array,
+    [VTD.STYLE]: String
   },
   inheritAttrs: false
 }

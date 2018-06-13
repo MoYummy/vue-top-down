@@ -1,8 +1,10 @@
+import VTD from './constants'
+
 export function outerDom (outerHTML, mapping = {}, rootSelector = '*') {
   const dom = str2dom(outerHTML, rootSelector)
   typeof mapping === 'object' && Object.keys(mapping).forEach(k => {
     dom.querySelectorAll(k).forEach(n => {
-      n.setAttribute('vue-component', kebab(mapping[k].name))
+      n.setAttribute(VTD.COMPONENT, kebab(mapping[k].name))
     })
   })
   return dom
@@ -42,13 +44,13 @@ export function dom2render (h, el, depth = 0) {
   }
 
   try {
-    const vueComponent = el.getAttribute('vue-component')
+    const vueComponent = el.getAttribute(VTD.COMPONENT)
     if (vueComponent) {
       return h(vueComponent, {
         props: {
-          outerHTML: el.outerHTML,
-          clazz: (el.getAttribute('class') || '').split(' '),
-          styles: el.getAttribute('style')
+          [VTD.OUTER_HTML]: el.outerHTML,
+          [VTD.CLASS]: (el.getAttribute('class') || '').split(' '),
+          [VTD.STYLE]: el.getAttribute('style')
         }
       })
     } else {
