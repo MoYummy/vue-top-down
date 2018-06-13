@@ -3,9 +3,8 @@
 </template>
 
 <script>
-import { VueTopDownItem } from 'vue-top-down'
-
 export default {
-  mixins: [VueTopDownItem]
+  props: ['clazz'],
+  inheritAttrs: false
 }
 </script>

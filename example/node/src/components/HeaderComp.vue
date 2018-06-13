@@ -1,5 +1,6 @@
 <template>
   <header :class="clazz">
+    <a href="../..">Back</a>
     <router-link
       v-for="(r, i) of routes" :key="i"
       :to="r.href">{{ r.title }}</router-link>

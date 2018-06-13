@@ -3,16 +3,8 @@
 </template>
 
 <script>
-import { VueTopDownItem } from 'vue-top-down'
-
 export default {
-  mixins: [VueTopDownItem],
-  computed: {
-    innerHTML () {
-      const root = document.createElement('div')
-      root.innerHTML = this.outerHTML
-      return root.querySelector('*').innerHTML
-    }
-  }
+  props: ['clazz', 'innerHTML'],
+  inheritAttrs: false
 }
 </script>

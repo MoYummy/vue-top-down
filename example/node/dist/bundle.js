@@ -189,12 +189,41 @@ function normalizeComponent (
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-(function (global, factory) {
-   true ? factory(exports) :
-  undefined;
-}(this, (function (exports) { 'use strict';
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+(function (global, factory) {
+  ( false ? undefined : _typeof2(exports)) === 'object' && typeof module !== 'undefined' ? factory(exports) :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : undefined;
+})(undefined, function (exports) {
+  'use strict';
+
+  var VTD = {
+    COMPONENT: 'vue-component',
+    OUTER_HTML: 'outerHTML',
+    ROOT: 'vtd-root',
+    MAPPING: 'vtd-mapping',
+    CLASS: 'clazz',
+    STYLE: 'vtd-style'
+  };
+
+  var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
+    return typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === 'undefined' ? 'undefined' : _typeof2(obj);
+  };
+
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key] = value;
+    }return obj;
+  }
 
   function outerDom(outerHTML) {
     var mapping = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -203,7 +232,7 @@ function normalizeComponent (
     var dom = str2dom(outerHTML, rootSelector);
     (typeof mapping === 'undefined' ? 'undefined' : _typeof(mapping)) === 'object' && Object.keys(mapping).forEach(function (k) {
       dom.querySelectorAll(k).forEach(function (n) {
-        n.setAttribute('vue-component', kebab(mapping[k].name));
+        n.setAttribute(VTD.COMPONENT, kebab(mapping[k].name));
       });
     });
     return dom;
@@ -249,14 +278,12 @@ function normalizeComponent (
     }
 
     try {
-      var vueComponent = el.getAttribute('vue-component');
+      var vueComponent = el.getAttribute(VTD.COMPONENT);
       if (vueComponent) {
+        var _props;
+
         return h(vueComponent, {
-          props: {
-            outerHTML: el.outerHTML,
-            clazz: (el.getAttribute('class') || '').split(' '),
-            styles: el.getAttribute('style')
-          }
+          props: (_props = {}, _defineProperty(_props, VTD.OUTER_HTML, el.outerHTML), _defineProperty(_props, VTD.CLASS, (el.getAttribute('class') || '').split(' ')), _defineProperty(_props, VTD.STYLE, el.getAttribute('style')), _props)
         });
       } else {
         var children = [];
@@ -282,23 +309,28 @@ function normalizeComponent (
     }
   }
 
+  function _defineProperty$1(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key] = value;
+    }return obj;
+  }
+
   var VueTopDown = {
-    props: {
-      outerHTML: {
-        type: String,
-        default: ''
-      }
-    },
+    props: _defineProperty$1({}, VTD.OUTER_HTML, {
+      type: String,
+      default: ''
+    }),
     data: function data() {
-      return {
-        root: '*',
-        mapping: {}
-      };
+      var _ref;
+
+      return _ref = {}, _defineProperty$1(_ref, VTD.ROOT, '*'), _defineProperty$1(_ref, VTD.MAPPING, {}), _ref;
     },
 
     computed: {
       outerDom: function outerDom$$1() {
-        return outerDom(this.outerHTML ? this.outerHTML : this.$el.outerHTML, this.mapping, this.root);
+        return outerDom(this[VTD.OUTER_HTML] ? this[VTD.OUTER_HTML] : this.$el.outerHTML, this[VTD.MAPPING], this[VTD.ROOT]);
       }
     },
     render: function render(h) {
@@ -306,22 +338,27 @@ function normalizeComponent (
     }
   };
 
+  var _props;
+
+  function _defineProperty$2(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key] = value;
+    }return obj;
+  }
+
   var VueTopDownItem = {
-    props: {
-      outerHTML: String,
-      clazz: Array,
-      styles: String
-    },
+    props: (_props = {}, _defineProperty$2(_props, VTD.OUTER_HTML, String), _defineProperty$2(_props, VTD.CLASS, Array), _defineProperty$2(_props, VTD.STYLE, String), _props),
     inheritAttrs: false
   };
 
   exports.VueTopDown = VueTopDown;
   exports.VueTopDownItem = VueTopDownItem;
+  exports.VTDConstants = VTD;
 
   Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-
+});
 
 /***/ }),
 /* 2 */
@@ -338,7 +375,14 @@ var _vueTopDown = __webpack_require__(1);
 
 exports.default = {
   name: 'ContentComp',
-  mixins: [_vueTopDown.VueTopDownItem]
+  mixins: [_vueTopDown.VueTopDownItem],
+  computed: {
+    innerHTML: function innerHTML() {
+      var root = document.createElement('div');
+      root.innerHTML = this[_vueTopDown.VTDConstants.OUTER_HTML];
+      return root.querySelector('*').innerHTML;
+    }
+  }
 }; //
 //
 //
@@ -421,6 +465,7 @@ exports.default = {
 //
 //
 //
+//
 
 /***/ }),
 /* 7 */
@@ -443,15 +488,15 @@ __webpack_require__.r(__webpack_exports__);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _vueTopDown = __webpack_require__(1);
+//
+//
+//
+//
 
 exports.default = {
-  mixins: [_vueTopDown.VueTopDownItem]
-}; //
-//
-//
-//
+  props: ['clazz'],
+  inheritAttrs: false
+};
 
 /***/ }),
 /* 9 */
@@ -474,22 +519,15 @@ __webpack_require__.r(__webpack_exports__);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _vueTopDown = __webpack_require__(1);
+//
+//
+//
+//
 
 exports.default = {
-  mixins: [_vueTopDown.VueTopDownItem],
-  computed: {
-    innerHTML: function innerHTML() {
-      var root = document.createElement('div');
-      root.innerHTML = this.outerHTML;
-      return root.querySelector('*').innerHTML;
-    }
-  }
-}; //
-//
-//
-//
+  props: ['clazz', 'innerHTML'],
+  inheritAttrs: false
+};
 
 /***/ }),
 /* 11 */
@@ -609,7 +647,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("router-view", {
-    attrs: { clazz: _vm.clazz, outerHTML: _vm.outerHTML }
+    attrs: { clazz: _vm.clazz, innerHTML: _vm.innerHTML }
   })
 }
 var staticRenderFns = []
@@ -635,11 +673,16 @@ var render = function() {
   return _c(
     "header",
     { class: _vm.clazz },
-    _vm._l(_vm.routes, function(r, i) {
-      return _c("router-link", { key: i, attrs: { to: r.href } }, [
-        _vm._v(_vm._s(r.title))
-      ])
-    })
+    [
+      _c("a", { attrs: { href: "../.." } }, [_vm._v("Back")]),
+      _vm._v(" "),
+      _vm._l(_vm.routes, function(r, i) {
+        return _c("router-link", { key: i, attrs: { to: r.href } }, [
+          _vm._v(_vm._s(r.title))
+        ])
+      })
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -14121,6 +14164,8 @@ var _ContentComp2 = _interopRequireDefault(_ContentComp);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 new _vue2.default({
   router: _router2.default,
   mixins: [_vueTopDown.VueTopDown],
@@ -14130,13 +14175,11 @@ new _vue2.default({
     ContentComp: _ContentComp2.default
   },
   data: function data() {
-    return {
-      mapping: {
-        'header': _HeaderComp2.default,
-        'footer': _FooterComp2.default,
-        '.content': _ContentComp2.default
-      }
-    };
+    return _defineProperty({}, _vueTopDown.VTDConstants.MAPPING, {
+      'header': _HeaderComp2.default,
+      'footer': _FooterComp2.default,
+      '.content': _ContentComp2.default
+    });
   }
 }).$mount('#app');
 
