@@ -2,25 +2,20 @@ import { outerDom, dom2render } from './utils'
 import VTD from './constants'
 
 const VueTopDown = {
-  props: {
-    [VTD.OUTER_HTML]: {
-      type: String,
-      default: ''
-    }
-  },
   data () {
     return {
       [VTD.ROOT]: '*',
-      [VTD.MAPPING]: {}
-    }
-  },
-  computed: {
-    outerDom () {
-      return outerDom(this[VTD.OUTER_HTML] ? this[VTD.OUTER_HTML] : this.$el.outerHTML, this[VTD.MAPPING], this[VTD.ROOT])
+      [VTD.MAPPING]: {},
+      [VTD.RENDER]: null
     }
   },
   render (h) {
-    return dom2render(h, this.outerDom)
+    if (this[VTD.RENDER]) {
+      return this[VTD.RENDER]
+    }
+    const od = outerDom(this.$el.outerHTML, this[VTD.MAPPING], this[VTD.ROOT])
+    this[VTD.RENDER] = dom2render(h, od)
+    return this[VTD.RENDER]
   }
 }
 

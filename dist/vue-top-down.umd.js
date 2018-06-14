@@ -10,7 +10,8 @@
     ROOT: 'vtd-root',
     MAPPING: 'vtd-mapping',
     CLASS: 'clazz',
-    STYLE: 'vtd-style'
+    STYLE: 'vtd-style',
+    RENDER: 'vtd-render'
   };
 
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -104,23 +105,18 @@
   function _defineProperty$1(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
   var VueTopDown = {
-    props: _defineProperty$1({}, VTD.OUTER_HTML, {
-      type: String,
-      default: ''
-    }),
     data: function data() {
       var _ref;
 
-      return _ref = {}, _defineProperty$1(_ref, VTD.ROOT, '*'), _defineProperty$1(_ref, VTD.MAPPING, {}), _ref;
-    },
-
-    computed: {
-      outerDom: function outerDom$$1() {
-        return outerDom(this[VTD.OUTER_HTML] ? this[VTD.OUTER_HTML] : this.$el.outerHTML, this[VTD.MAPPING], this[VTD.ROOT]);
-      }
+      return _ref = {}, _defineProperty$1(_ref, VTD.ROOT, '*'), _defineProperty$1(_ref, VTD.MAPPING, {}), _defineProperty$1(_ref, VTD.RENDER, null), _ref;
     },
     render: function render(h) {
-      return dom2render(h, this.outerDom);
+      if (this[VTD.RENDER]) {
+        return this[VTD.RENDER];
+      }
+      var od = outerDom(this.$el.outerHTML, this[VTD.MAPPING], this[VTD.ROOT]);
+      this[VTD.RENDER] = dom2render(h, od);
+      return this[VTD.RENDER];
     }
   };
 

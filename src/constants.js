@@ -4,5 +4,6 @@ export default {
   ROOT: 'vtd-root',
   MAPPING: 'vtd-mapping',
   CLASS: 'clazz',
-  STYLE: 'vtd-style'
+  STYLE: 'vtd-style',
+  RENDER: 'vtd-render'
 }
