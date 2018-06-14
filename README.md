@@ -11,7 +11,7 @@ Check out [demo](https://moyummy.github.io/vue-top-down/example/).
 ## Usage
 
 ~~~javascript
-import { VueTopDown, VTDConstants } from 'vue-top-down'
+import { VueTopDown, VTDConstants as VTD } from 'vue-top-down'
 import OneComponent from 'path/to/one/component'
 import AnotherComponent from 'path/to/another/component'
 
@@ -23,8 +23,8 @@ const StructComp = {
   },
   data () {
     return {
-      [VTDConstants.ROOT]: '.selector.from.root.path.of.hosting.element',
-      [VTDConstants.MAPPING]: {
+      [VTD.ROOT]: '.selector.of.hosting.element',
+      [VTD.MAPPING]: {
         '.selector.for.one.component': OneComponent,
         '.selector.for.another.component': AnotherComponent
       }
@@ -38,6 +38,7 @@ import { VueTopDownItem } from 'vue-top-down'
 
 export default {
   name: 'OneComponent',
-  mixins: [VueTopDownItem] // handle 'clazz' / 'outerHTML' or omit this to render independent component
+  mixins: [VueTopDownItem], // handle 'clazz' / 'outerHTML' or omit this to render independent component
+  inheritAttrs: false
 }
 ~~~
