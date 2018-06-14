@@ -35,7 +35,7 @@ const ContentComp = {
   computed: {
     innerHTML () {
       const root = document.createElement('div')
-      root.innerHTML = this[VTDConstants.OUTER_HTML]
+      root.innerHTML = this[VueTopDown.VTDConstants.OUTER_HTML]
       return root.querySelector('*').innerHTML
     }
   }
@@ -53,11 +53,13 @@ const Page = {
   inheritAttrs: false
 }
 
-const router = new VueRouter([
-  { path: '/hello-vue', component: HelloVue },
-  { path: '/page', component: Page },
-  { path: '*', redirect: '/page' }
-])
+const router = new VueRouter({
+  routes: [
+    { path: '/hello-vue', component: HelloVue },
+    { path: '/page', component: Page },
+    { path: '*', redirect: '/page' }
+  ]
+})
 
 const inst = new Vue({
   router,
@@ -69,7 +71,7 @@ const inst = new Vue({
   },
   data () {
     return {
-      [VueTopDown.VTDConstants]: {
+      [VueTopDown.VTDConstants.MAPPING]: {
         'header': HeaderComp,
         'footer': FooterComp,
         '.content': ContentComp
