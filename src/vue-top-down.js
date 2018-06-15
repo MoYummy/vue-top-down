@@ -10,12 +10,12 @@ const VueTopDown = {
     }
   },
   render (h) {
-    if (this[VTD.RENDER]) {
-      return this[VTD.RENDER]
+    if (this.$data[VTD.RENDER]) {
+      return this.$data[VTD.RENDER]
     }
     const od = outerDom(this.$el.outerHTML, this.$data[VTD.MAPPING], this.$data[VTD.ROOT])
-    this[VTD.RENDER] = dom2render(h, od)
-    return this[VTD.RENDER]
+    this.$data[VTD.RENDER] = dom2render(h, od)
+    return this.$data[VTD.RENDER]
   }
 }
 

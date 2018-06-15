@@ -103,12 +103,12 @@ var VueTopDown = {
     return _ref = {}, _defineProperty$1(_ref, VTD.ROOT, '*'), _defineProperty$1(_ref, VTD.MAPPING, {}), _defineProperty$1(_ref, VTD.RENDER, null), _ref;
   },
   render: function render(h) {
-    if (this[VTD.RENDER]) {
-      return this[VTD.RENDER];
+    if (this.$data[VTD.RENDER]) {
+      return this.$data[VTD.RENDER];
     }
     var od = outerDom(this.$el.outerHTML, this.$data[VTD.MAPPING], this.$data[VTD.ROOT]);
-    this[VTD.RENDER] = dom2render(h, od);
-    return this[VTD.RENDER];
+    this.$data[VTD.RENDER] = dom2render(h, od);
+    return this.$data[VTD.RENDER];
   }
 };
 
