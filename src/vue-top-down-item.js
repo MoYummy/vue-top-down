@@ -6,7 +6,15 @@ const VueTopDownItem = {
     [VTD.CLASS]: Array,
     [VTD.STYLE]: String
   },
-  inheritAttrs: false
+  inheritAttrs: false,
+  computed: {
+    outerHTML () {
+      return this[VTD.OUTER_HTML]
+    },
+    clazz () {
+      return this[VTD.CLASS]
+    }
+  }
 }
 
 export { VueTopDownItem }

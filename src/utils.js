@@ -36,7 +36,6 @@ export function dom2render (h, el, depth = 0) {
     return null
   }
   if (el instanceof Text) {
-  // white space or dangling text node
     return el.data
   }
   if (!(el instanceof HTMLElement)) {
@@ -69,9 +68,9 @@ export function dom2render (h, el, depth = 0) {
     }
   } catch (err) {
     console.error(err)
-    return h('div', {
+    return h(el.tagName, {
       attrs: {
-        class: 'render-failure'
+        [VTD.FAILURE]: ''
       }
     })
   }

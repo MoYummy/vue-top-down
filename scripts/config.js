@@ -7,7 +7,6 @@ const uglify = require('rollup-plugin-uglify').uglify
 
 const baseConfig = {
   package: 'vue-top-down',
-  name: 'VueTopDown',
   entry: 'src/index.js'
 }
 
@@ -72,7 +71,7 @@ function genConfig (name) {
   const output = {
     format,
     file: path.resolve(__dirname, '../dist', [baseConfig.package, name, 'js'].join('.')),
-    name: baseConfig.name
+    name: baseConfig.package
   }
   return Object.assign({}, { input, external, output, plugins })
 }
