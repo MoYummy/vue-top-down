@@ -23,8 +23,13 @@ function outerDom(outerHTML) {
 
   var dom = str2dom(outerHTML, rootSelector);
   (typeof mapping === 'undefined' ? 'undefined' : _typeof(mapping)) === 'object' && Object.keys(mapping).forEach(function (k) {
-    dom.querySelectorAll(k).forEach(function (n) {
-      n.setAttribute(VTD.COMPONENT, kebab(mapping[k].name));
+    var comp = mapping[k];
+    var els = [];
+    try {
+      els = dom.querySelectorAll(k);
+    } catch (err) {}
+    els.forEach(function (n) {
+      n.setAttribute(VTD.COMPONENT, typeof comp === 'string' ? kebab(comp) : kebab(comp.name));
     });
   });
   return dom;
@@ -48,7 +53,7 @@ function str2dom(outerHTML) {
 function kebab() {
   var str = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
-  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+  return typeof str === 'string' ? str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase() : '';
 }
 
 function dom2render(h, el) {

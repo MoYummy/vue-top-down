@@ -3,8 +3,16 @@ import VTD from './constants'
 export function outerDom (outerHTML, mapping = {}, rootSelector = '*') {
   const dom = str2dom(outerHTML, rootSelector)
   typeof mapping === 'object' && Object.keys(mapping).forEach(k => {
-    dom.querySelectorAll(k).forEach(n => {
-      n.setAttribute(VTD.COMPONENT, kebab(mapping[k].name))
+    const comp = mapping[k]
+    let els = []
+    try {
+      els = dom.querySelectorAll(k)
+    } catch (err) { }
+    els.forEach(n => {
+      n.setAttribute(
+        VTD.COMPONENT,
+        (typeof comp === 'string') ? kebab(comp) : kebab(comp.name)
+      )
     })
   })
   return dom
@@ -24,7 +32,7 @@ function str2dom (outerHTML, rootSelector = '*') {
 }
 
 function kebab (str = '') {
-  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+  return (typeof str === 'string') ? str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase() : ''
 }
 
 export function dom2render (h, el, depth = 0) {
