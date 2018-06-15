@@ -1,3 +1,4 @@
+const { VueTopDown, VueTopDownItem, VTDConstants } = window['vue-top-down']
 const HeaderComp = {
   name: 'HeaderComp',
   template: `<header :class="clazz">
@@ -6,7 +7,7 @@ const HeaderComp = {
     v-for="(r, i) of routes" :key="i"
     :to="r.href">{{ r.title }}</router-link>
 </header>`,
-  mixins: [VueTopDown.VueTopDownItem],
+  mixins: [VueTopDownItem],
   computed: {
     routes () {
       return [
@@ -20,7 +21,7 @@ const HeaderComp = {
 const FooterComp = {
   name: 'FooterComp',
   template: `<footer :class="clazz">{{ vueFooter }}</footer>`,
-  mixins: [VueTopDown.VueTopDownItem],
+  mixins: [VueTopDownItem],
   data () {
     return {
       vueFooter: 'This is Vue Footer'
@@ -31,11 +32,11 @@ const FooterComp = {
 const ContentComp = {
   name: 'ContentComp',
   template: `<router-view :clazz="clazz" :innerHTML="innerHTML"></router-view>`,
-  mixins: [VueTopDown.VueTopDownItem],
+  mixins: [VueTopDownItem],
   computed: {
     innerHTML () {
       const root = document.createElement('div')
-      root.innerHTML = this[VueTopDown.VTDConstants.OUTER_HTML]
+      root.innerHTML = this[VTDConstants.OUTER_HTML]
       return root.querySelector('*').innerHTML
     }
   }
@@ -63,7 +64,7 @@ const router = new VueRouter({
 
 const inst = new Vue({
   router,
-  mixins: [VueTopDown.VueTopDown],
+  mixins: [VueTopDown],
   components: {
     HeaderComp,
     FooterComp,
@@ -71,7 +72,7 @@ const inst = new Vue({
   },
   data () {
     return {
-      [VueTopDown.VTDConstants.MAPPING]: {
+      [VTDConstants.MAPPING]: {
         'header': HeaderComp,
         'footer': FooterComp,
         '.content': ContentComp
