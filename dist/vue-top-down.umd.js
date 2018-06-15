@@ -1,17 +1,18 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.VueTopDown = {})));
+  (factory((global['vue-top-down'] = {})));
 }(this, (function (exports) { 'use strict';
 
   var VTD = {
-    COMPONENT: 'vue-component',
-    OUTER_HTML: 'outerHTML',
-    ROOT: 'vtd-root',
-    MAPPING: 'vtd-mapping',
-    CLASS: 'clazz',
-    STYLE: 'vtd-style',
-    RENDER: 'vtd-render'
+    COMPONENT: '_VueTopDown_component',
+    FAILURE: '_VueTopDown_failure',
+    OUTER_HTML: '$_VueTopDown_outerHTML',
+    ROOT: '$_VueTopDown_root',
+    MAPPING: '$_VueTopDown_mapping',
+    CLASS: '$_VueTopDown_class',
+    STYLE: '$_VueTopDown_style',
+    RENDER: '$_VueTopDown_render'
   };
 
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -63,7 +64,6 @@
       return null;
     }
     if (el instanceof Text) {
-      // white space or dangling text node
       return el.data;
     }
     if (!(el instanceof HTMLElement)) {
@@ -94,10 +94,8 @@
       }
     } catch (err) {
       console.error(err);
-      return h('div', {
-        attrs: {
-          class: 'render-failure'
-        }
+      return h(el.tagName, {
+        attrs: _defineProperty({}, VTD.FAILURE, '')
       });
     }
   }
@@ -114,7 +112,7 @@
       if (this[VTD.RENDER]) {
         return this[VTD.RENDER];
       }
-      var od = outerDom(this.$el.outerHTML, this[VTD.MAPPING], this[VTD.ROOT]);
+      var od = outerDom(this.$el.outerHTML, this.$data[VTD.MAPPING], this.$data[VTD.ROOT]);
       this[VTD.RENDER] = dom2render(h, od);
       return this[VTD.RENDER];
     }
@@ -126,7 +124,15 @@
 
   var VueTopDownItem = {
     props: (_props = {}, _defineProperty$2(_props, VTD.OUTER_HTML, String), _defineProperty$2(_props, VTD.CLASS, Array), _defineProperty$2(_props, VTD.STYLE, String), _props),
-    inheritAttrs: false
+    inheritAttrs: false,
+    computed: {
+      outerHTML: function outerHTML() {
+        return this[VTD.OUTER_HTML];
+      },
+      clazz: function clazz() {
+        return this[VTD.CLASS];
+      }
+    }
   };
 
   exports.VueTopDown = VueTopDown;
