@@ -1,8 +1,23 @@
 const puppeteer = require('puppeteer')
+const rollupConfig = require('../../scripts/config').genConfig('_test')
 process.env.CHROME_BIN = puppeteer.executablePath()
 
 module.exports = function (config) {
   config.set({
+    files: [
+      './specs/**/*.spec.js'
+    ],
+    preprocessors: {
+      '../../src/**/*.js': ['rollupBabel'],
+      './specs/**/*.js': ['rollupBabel']
+    },
+    customPreprocessors: {
+      rollupBabel: {
+        base: 'rollup',
+        options: rollupConfig
+      }
+    },
+
     browsers: ['ChromeHeadlessNoSandbox'],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
@@ -12,16 +27,21 @@ module.exports = function (config) {
     },
 
     frameworks: ['mocha', 'sinon-chai'],
-    files: ['specs/**/*.js'],
+    client: {
+      chai: {
+        includeStack: true
+      }
+    },
 
     reporters: ['spec', 'coverage'],
     coverageReporter: {
       dir: './coverage',
       reporters: [
-        { type: 'lcov', subdir: '.' },
+        // { type: 'lcov', subdir: '.' },
         { type: 'text-summary' }
       ]
+    },
 
-    }
+    singleRun: true,
   })
 }

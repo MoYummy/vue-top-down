@@ -4,6 +4,7 @@ const buble = require('rollup-plugin-buble')
 const minifyes = require('rollup-plugin-minify-es')
 const resolve = require('rollup-plugin-node-resolve')
 const uglify = require('rollup-plugin-uglify').uglify
+const istanbul = require('rollup-plugin-istanbul')
 
 const baseConfig = {
   package: 'vue-top-down',
@@ -12,7 +13,8 @@ const baseConfig = {
 
 const stages = {
   BABEL: 0,
-  MINIFY: 8
+  MINIFY: 8,
+  COVERAGE: 9
 }
 
 const builds = {
@@ -36,6 +38,12 @@ const builds = {
     plugins: {
       [stages.MINIFY]: minifyes()
     }
+  },
+  '_test': {
+    format: 'cjs',
+    plugins: {
+      [stages.COVERAGE]: istanbul({ exclude: 'test/**/*.js'})
+    }
   }
 }
 
@@ -56,7 +64,7 @@ function genConfig (name) {
       // externalHelpers: true
     }),
     buble(),
-    !min ? undefined :
+    !min ? null :
       (opts.plugins && opts.plugins[stages.MINIFY]) ? opts.plugins[stages.MINIFY] : uglify({
         output: {
           ascii_only: true
@@ -65,6 +73,7 @@ function genConfig (name) {
           pure_funcs: ['makeMap']
         }
       }),
+    (opts.plugins && opts.plugins[stages.COVERAGE]) ? opts.plugins[stages.COVERAGE]: null
   ].filter(x => x)
 
   const { format } = opts
@@ -76,4 +85,5 @@ function genConfig (name) {
   return Object.assign({}, { input, external, output, plugins })
 }
 
-exports.getAllBuilds = () => Object.keys(builds).map(genConfig)
+exports.genConfig = genConfig
+exports.getAllBuilds = () => Object.keys(builds).filter(k => !/^_/.test(k)).map(genConfig)
