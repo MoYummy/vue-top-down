@@ -7,10 +7,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
   mode: 'production',
   entry: {
-    'bundle': './src/index.js'
+    'example-node': './src/index.js'
   },
   output: {
-    filename: '[name].js',
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
   module: {
@@ -25,7 +26,8 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         query: {
-          presets: ['env']
+          presets: ['env'],
+          plugins: ['syntax-dynamic-import']
         },
         exclude: file => (
           /node_modules/.test(file)
@@ -58,7 +60,10 @@ module.exports = {
     })
   ],
   optimization: {
-    minimize: false
+    minimize: true,
+    splitChunks: {
+      chunks: 'all'
+    }
   },
   resolve: {
     alias: {

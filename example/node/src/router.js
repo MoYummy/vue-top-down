@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Page from './components/Page'
-import HelloVue from './components/HelloVue'
+const Page = () => import('./components/Page')
+const HelloVue = () => import('./components/HelloVue')
 
 Vue.use(VueRouter)
 
