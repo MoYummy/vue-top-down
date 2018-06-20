@@ -9,3 +9,7 @@ export function domEqual(resultHTML, expectHTML, expectEqual = true) {
   }
   return isEqual
 }
+
+export function objEqual(resultObj, expectObj) {
+  return JSON.stringify(resultObj) === JSON.stringify(expectObj)
+}

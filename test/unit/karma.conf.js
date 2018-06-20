@@ -18,11 +18,15 @@ module.exports = function (config) {
       }
     },
 
-    browsers: ['ChromeHeadlessNoSandbox'],
+    browsers: ['ChromeHeadlessNoSandbox', 'FirefoxHeadless'],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
         flags: ['--no-sandbox']
+      },
+      FirefoxHeadless: {
+        base: 'Firefox',
+        flags: ['-headless'],
       }
     },
 

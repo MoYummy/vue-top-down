@@ -10,6 +10,9 @@ node_js:
 dist: trusty
 addons:
   chrome: stable
+  firefox: latest
+env:
+  - MOZ_HEADLESS=1
 cache:
   directories:
     - node_modules
