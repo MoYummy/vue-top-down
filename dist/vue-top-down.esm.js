@@ -37,9 +37,18 @@ function str2dom(outerHTML) {
   var dom = document.createElement('div');
   dom.setAttribute('id', 'root');
   dom.innerHTML = outerHTML;
+  var el = void 0;
   try {
-    var el = dom.querySelector(rootSelector);
-    return el === null ? dom : el;
+    el = dom.querySelector(rootSelector);
+    if (el) {
+      return el;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  try {
+    el = dom.querySelector('*');
+    return el ? el : dom;
   } catch (err) {
     console.error(err);
     return dom;
@@ -59,49 +68,53 @@ function dom2render(h, el) {
     return null;
   }
 
-  if (!el) {
-    return null;
-  }
   if (el instanceof Text) {
     return el.data;
   }
+
   if (!(el instanceof HTMLElement)) {
     return null;
   }
 
-  try {
-    var vueComponent = el.getAttribute(VTD.COMPONENT);
-    if (vueComponent) {
-      var _props;
+  var vueComponent = el.getAttribute(VTD.COMPONENT);
+  if (vueComponent) {
+    var _props;
 
-      return h(vueComponent, {
-        props: (_props = {}, _defineProperty(_props, VTD.OUTER_HTML, el.outerHTML), _defineProperty(_props, VTD.CLASS, (el.getAttribute('class') || '').split(' ')), _defineProperty(_props, VTD.STYLE, el.getAttribute('style')), _props)
-      });
-    } else {
-      var children = [];
-      el.childNodes.forEach(function (n) {
-        var vnode = dom2render(h, n, depth + 1);
-        vnode && children.push(vnode);
-      });
-      var attrs = {};
-      el.getAttributeNames().forEach(function (attr) {
-        attrs[attr] = el.getAttribute(attr);
-      });
-      return h(el.tagName, {
-        attrs: attrs
-      }, children);
-    }
-  } catch (err) {
-    console.error(err);
-    return h(el.tagName, {
-      attrs: _defineProperty({}, VTD.FAILURE, '')
+    return render(h, vueComponent, {
+      props: (_props = {}, _defineProperty(_props, VTD.OUTER_HTML, el.outerHTML), _defineProperty(_props, VTD.CLASS, (el.getAttribute('class') || '').split(' ')), _defineProperty(_props, VTD.STYLE, el.getAttribute('style')), _props)
     });
   }
+
+  var children = [];
+  el.childNodes.forEach(function (n) {
+    var vnode = dom2render(h, n, depth + 1);
+    vnode && children.push(vnode);
+  });
+  var attrs = {};
+  el.getAttributeNames().forEach(function (attr) {
+    attrs[attr] = el.getAttribute(attr);
+  });
+  return render(h, el.tagName, { attrs: attrs }, children);
 }
+
+function render(h, tag, opts, children) {
+  try {
+    return children ? h(tag, opts, children) : h(tag, opts);
+  } catch (error) {
+    console.error(err);
+    var el = document.createElement(tag);
+    el.setAttribute([VTD.FAILURE], '');
+    return el;
+  }
+}
+
+var _props;
 
 function _defineProperty$1(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var VueTopDown = {
+  props: (_props = {}, _defineProperty$1(_props, VTD.OUTER_HTML, String), _defineProperty$1(_props, VTD.CLASS, Array), _defineProperty$1(_props, VTD.STYLE, String), _props),
+  inheritAttrs: false,
   data: function data() {
     var _ref;
 
@@ -111,18 +124,19 @@ var VueTopDown = {
     if (this.$data[VTD.RENDER]) {
       return this.$data[VTD.RENDER];
     }
-    var od = outerDom(this.$el.outerHTML, this.$data[VTD.MAPPING], this.$data[VTD.ROOT]);
+    var outerHTML = this[VTD.OUTER_HTML] ? this[VTD.OUTER_HTML] : this.$el.outerHTML;
+    var od = outerDom(outerHTML, this.$data[VTD.MAPPING], this.$data[VTD.ROOT]);
     this.$data[VTD.RENDER] = dom2render(h, od);
     return this.$data[VTD.RENDER];
   }
 };
 
-var _props;
+var _props$1;
 
 function _defineProperty$2(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var VueTopDownItem = {
-  props: (_props = {}, _defineProperty$2(_props, VTD.OUTER_HTML, String), _defineProperty$2(_props, VTD.CLASS, Array), _defineProperty$2(_props, VTD.STYLE, String), _props),
+  props: (_props$1 = {}, _defineProperty$2(_props$1, VTD.OUTER_HTML, String), _defineProperty$2(_props$1, VTD.CLASS, Array), _defineProperty$2(_props$1, VTD.STYLE, String), _props$1),
   inheritAttrs: false,
   computed: {
     outerHTML: function outerHTML() {
