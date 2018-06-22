@@ -16,6 +16,7 @@ env:
 cache:
   directories:
     - node_modules
+    - example/node/node_modules
 
 before_install:
 - echo "before install"
@@ -30,5 +31,5 @@ script:
 
 after_success:
 - cat ${TRAVIS_BUILD_DIR}/logs/*.log
-- sudo rm -f $TRAVIS_BUILD_DIR/logs/*.log
-- if [ "$TRAVIS_BRANCH" == "master" ]; then echo "commit on master"; fi
+- sudo rm -f ${TRAVIS_BUILD_DIR}/logs/*.log
+- if [ "${TRAVIS_BRANCH}" == "master" ]; then echo "commit on master"; fi

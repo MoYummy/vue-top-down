@@ -3,6 +3,12 @@ import { domEqual, objEqual } from './test_utils'
 
 describe ('utils', () => {
   describe (utils.linkMapping.name, () => {
+    beforeEach(() => {
+      sinon.stub(console, 'warn')
+    })
+    afterEach(() => {
+      console.warn.restore()
+    })
     it ('should pick mapping', () => {
       const Exist = {}
       const Missing = {}
@@ -25,8 +31,10 @@ describe ('utils', () => {
         mapping: {},
         rootSelector: '*'
       })
+      sinon.stub(console, 'error')
     })
     afterEach(() => {
+      console.error.restore()
     })
     after(() => {
     })
@@ -51,6 +59,14 @@ describe ('utils', () => {
       expect(domEqual(outerDom.outerHTML, '<div class="sub"><div class="comp" _vuetopdown_component="some-component"></div></div>')).to.equal(true)
     })
 
+    it ('should return root for invalid rootSelector', () => {
+      input.outerHTML = '<div><div class=sub><div class=comp></div></div></div>'
+      input.mapping = { '.comp': 'SomeComponent' }
+      input.rootSelector = 123
+      const outerDom = utils.outerDom(input.outerHTML, input.mapping, input.rootSelector)
+      expect(domEqual(outerDom.outerHTML, '<div><div class="sub"><div class="comp" _vuetopdown_component="some-component"></div></div></div>')).to.equal(true)
+    })
+
     it ('should return root for unfound rootSelector', () => {
       input.outerHTML = '<div><div class=sub><div class=comp></div></div></div>'
       input.mapping = { '.comp': 'SomeComponent' }
@@ -60,10 +76,10 @@ describe ('utils', () => {
     })
   }),
   describe (utils.dom2render.name, () => {
-    let input = { }
     const sandbox = sinon.createSandbox({
       properties: ["spy", "stub", "mock"]
     })
+    let input = { }
     beforeEach(() => {
       input = Object.assign({}, {
         h: tag => document.createElement(tag),
