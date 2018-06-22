@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import router from './router'
 import { VueTopDown, VTDConstants } from 'vue-top-down'
-const HeaderComp = () => import('./components/HeaderComp')
-const FooterComp = () => import('./components/FooterComp')
-const ContentComp = () => import('./components/ContentComp')
+import HeaderComp from './components/HeaderComp'
+import FooterComp from './components/FooterComp'
+import ContentComp from './components/ContentComp'
+// const FooterComp = () => import('./components/FooterComp')
+// const ContentComp = () => import('./components/ContentComp')
 
 new Vue({
   router,

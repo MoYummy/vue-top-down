@@ -60,10 +60,10 @@ module.exports = {
     })
   ],
   optimization: {
-    minimize: true,
     splitChunks: {
       chunks: 'all'
-    }
+    },
+    minimize: true
   },
   resolve: {
     alias: {
