@@ -5,14 +5,21 @@
 }(this, (function (exports) { 'use strict';
 
   var VTD = {
+    // html
     COMPONENT: '_VueTopDown_component',
     FAILURE: '_VueTopDown_failure',
-    OUTER_HTML: '$_VueTopDown_outerHTML',
-    OUTER_DOM: '$_VueTopDown_outerDom',
+
+    // user input
     ROOT: '$_VueTopDown_root',
     MAPPING: '$_VueTopDown_mapping',
+
+    // props
+    OUTER_HTML: '$_VueTopDown_outerHTML',
     CLASS: '$_VueTopDown_class',
     STYLE: '$_VueTopDown_style',
+
+    // internal
+    OUTER_DOM: '$_VueTopDown_outerDom',
     RENDER: '$_VueTopDown_render',
     LIMIT: '$_VueTopDown_limit'
   };
@@ -159,19 +166,16 @@
       return outerDom(outerHTML, mapping, this.$data[VTD.ROOT]);
     }),
     render: function render(h) {
-      var _this = this;
-
-      if (this.$data[VTD.LIMIT] > 1000) {
+      console.log(this);
+      if (this.$data[VTD.LIMIT] > 1e2) {
         console.warn('Too many times for render function to be called');
-        setTimeout(function () {
-          _this.$data[VTD.LIMIT] = 0;
-        }, 60000);
         return this.$data[VTD.RENDER];
       }
-      this.$data[VTD.LIMIT] += 1;
-      this.$data[VTD.RENDER] = dom2render(h, this[VTD.OUTER_DOM]);
-      // debugObj(this.$data[VTD.RENDER])
-      return this.$data[VTD.RENDER];
+      var r = dom2render(h, this[VTD.OUTER_DOM]);
+      this.$nextTick(function () {
+        // debugObj(this.$data[VTD.RENDER])
+      });
+      return r;
     }
   };
 
