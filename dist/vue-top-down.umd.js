@@ -166,7 +166,6 @@
       return outerDom(outerHTML, mapping, this.$data[VTD.ROOT]);
     }),
     render: function render(h) {
-      console.log(this);
       if (this.$data[VTD.LIMIT] > 1e2) {
         console.warn('Too many times for render function to be called');
         return this.$data[VTD.RENDER];
