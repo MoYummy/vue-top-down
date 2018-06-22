@@ -1,19 +1,29 @@
 import VTD from './constants'
 
+export function linkMapping (mapping = {}, components = {}) {
+  const compKeys = Object.keys(components)
+  const compValues = Object.values(components)
+  const linked = {}
+  for (const k in mapping) {
+    const comp = mapping[k]
+    const i = compValues.findIndex(x => x === comp)
+    i === -1 && console.warn(k + ' is missing')
+    linked[k] = compKeys[i]
+  }
+  return linked
+}
+
 export function outerDom (outerHTML, mapping = {}, rootSelector = '*') {
   const dom = str2dom(outerHTML, rootSelector)
   typeof mapping === 'object' && Object.keys(mapping).forEach(k => {
     const comp = mapping[k]
-    let els = []
+    if (typeof comp !== 'string') {
+      return
+    }
     try {
-      els = dom.querySelectorAll(k)
+      dom.querySelectorAll(k)
+        .forEach(el => el.setAttribute(VTD.COMPONENT, kebab(comp)))
     } catch (err) { }
-    els.forEach(n => {
-      n.setAttribute(
-        VTD.COMPONENT,
-        (typeof comp === 'string') ? kebab(comp) : kebab(comp.name)
-      )
-    })
   })
   return dom
 }
@@ -83,10 +93,18 @@ export function dom2render (h, el, depth = 0) {
 function render (h, tag, opts, children) {
   try {
     return children ? h(tag, opts, children) : h(tag, opts)
-  } catch (error) {
+  } catch (err) {
     console.error(err)
     const el = document.createElement(tag)
     el.setAttribute([VTD.FAILURE], '')
     return el
   }
+}
+
+export function debugObj(obj) {
+  const o = {}
+  for (const k in obj) {
+    typeof obj[k] !== 'function' && (o[k] = obj[k])
+  }
+  localStorage.getItem('debug') && console.dir(o)
 }

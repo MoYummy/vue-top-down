@@ -2,6 +2,19 @@ import * as utils from '../../../src/utils'
 import { domEqual, objEqual } from './test_utils'
 
 describe ('utils', () => {
+  describe (utils.linkMapping.name, () => {
+    it ('should pick mapping', () => {
+      const Exist = {}
+      const Missing = {}
+      const Unused = {}
+      const mapping = { 'exist': Exist, 'missing': Missing }
+      const components = { Exist, Unused }
+      const linked = utils.linkMapping(mapping, components)
+      expect(linked['exist']).to.equal('Exist')
+      expect(linked['missing']).to.equal(undefined)
+      expect(Object.values(linked)).not.to.include('Unused')
+    })
+  })
   describe (utils.outerDom.name, () => {
     let input = {}
     before(() => {
@@ -25,14 +38,14 @@ describe ('utils', () => {
 
     it ('should add attribte for component', () => {
       input.outerHTML = '<div><div class=comp></div></div>'
-      input.mapping = { '.comp': { name: 'SomeComponent' } }
+      input.mapping = { '.comp': 'SomeComponent' }
       const outerDom = utils.outerDom(input.outerHTML, input.mapping, input.rootSelector)
       expect(domEqual(outerDom.outerHTML, '<div><div class=comp _vuetopdown_component=some-component></div></div>')).to.equal(true)
     })
 
     it ('should return subnode for rootSelector', () => {
       input.outerHTML = '<div><div class=sub><div class=comp></div></div></div>'
-      input.mapping = { '.comp': { name: 'SomeComponent' } }
+      input.mapping = { '.comp': 'SomeComponent' }
       input.rootSelector = '.sub'
       const outerDom = utils.outerDom(input.outerHTML, input.mapping, input.rootSelector)
       expect(domEqual(outerDom.outerHTML, '<div class="sub"><div class="comp" _vuetopdown_component="some-component"></div></div>')).to.equal(true)
@@ -40,7 +53,7 @@ describe ('utils', () => {
 
     it ('should return root for unfound rootSelector', () => {
       input.outerHTML = '<div><div class=sub><div class=comp></div></div></div>'
-      input.mapping = { '.comp': { name: 'SomeComponent' } }
+      input.mapping = { '.comp': 'SomeComponent' }
       input.rootSelector = '.unfound'
       const outerDom = utils.outerDom(input.outerHTML, input.mapping, input.rootSelector)
       expect(domEqual(outerDom.outerHTML, '<div><div class=sub><div class=comp _vuetopdown_component=some-component></div></div></div>')).to.equal(true)
@@ -100,6 +113,29 @@ describe ('utils', () => {
       utils.dom2render(input.h, input.el)
       expect(spy.callCount).to.equal(1)
       expect(spy).calledWith(sinon.match.any, sinon.match(v => objEqual(v, attrs)), sinon.match.any)
+    })
+  })
+  describe (utils.debugObj.name, () => {
+    beforeEach(() => {
+      localStorage.setItem('debug', 1)
+      sinon.spy(console, 'dir')
+    })
+    afterEach(() => {
+      localStorage.removeItem('debug')
+      console.dir.restore()
+    })
+    it ('should print object', () => {
+      utils.debugObj({ a: 1 })
+      expect(console.dir).to.be.calledWithMatch({ a: 1 })
+    })
+    it ('should ignore function', () => {
+      utils.debugObj({ a: function () { } })
+      expect(console.dir).to.be.calledWithMatch({})
+    })
+    it ('should ignore for non-debug', () => {
+      localStorage.removeItem('debug')
+      utils.debugObj({ a: 1 })
+      expect(console.dir).not.to.be.called
     })
   })
 })

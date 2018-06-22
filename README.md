@@ -1,5 +1,7 @@
 # vue-top-down
 
+[![Build Status](https://travis-ci.org/MoYummy/vue-top-down.svg?branch=master)](https://travis-ci.org/MoYummy/vue-top-down)
+
 [![NPM](https://nodei.co/npm/vue-top-down.png)](https://www.npmjs.com/package/vue-top-down)
 
 `Vue` rendering is designed to be bottom-up.
@@ -42,3 +44,5 @@ export default {
   inheritAttrs: false
 }
 ~~~
+
+Note: Async components with webpack code splitting may not be working.

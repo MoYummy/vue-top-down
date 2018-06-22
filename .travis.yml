@@ -21,12 +21,14 @@ before_install:
 - echo "before install"
 
 install:
-- npm i
+- cd ${TRAVIS_BUILD_DIR} && npm i
+- cd ${TRAVIS_BUILD_DIR}/example/node && npm i
 
 script:
-- npm t
+- cd ${TRAVIS_BUILD_DIR} && npm t
+- cd ${TRAVIS_BUILD_DIR}/example/node && npm run build
 
 after_success:
-- cat $TRAVIS_BUILD_DIR/logs/*.log
+- cat ${TRAVIS_BUILD_DIR}/logs/*.log
 - sudo rm -f $TRAVIS_BUILD_DIR/logs/*.log
 - if [ "$TRAVIS_BRANCH" == "master" ]; then echo "commit on master"; fi
