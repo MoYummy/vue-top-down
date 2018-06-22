@@ -102,9 +102,12 @@ function render (h, tag, opts, children) {
 }
 
 export function debugObj(obj) {
+  if (!localStorage.getItem('debug')) {
+    return
+  }
   const o = {}
   for (const k in obj) {
     typeof obj[k] !== 'function' && (o[k] = obj[k])
   }
-  localStorage.getItem('debug') && console.dir(o)
+  console.dir(o)
 }
