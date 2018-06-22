@@ -2,16 +2,41 @@ var VTD = {
   COMPONENT: '_VueTopDown_component',
   FAILURE: '_VueTopDown_failure',
   OUTER_HTML: '$_VueTopDown_outerHTML',
+  OUTER_DOM: '$_VueTopDown_outerDom',
   ROOT: '$_VueTopDown_root',
   MAPPING: '$_VueTopDown_mapping',
   CLASS: '$_VueTopDown_class',
   STYLE: '$_VueTopDown_style',
-  RENDER: '$_VueTopDown_render'
+  RENDER: '$_VueTopDown_render',
+  LIMIT: '$_VueTopDown_limit'
 };
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function linkMapping() {
+  var mapping = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var components = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  var compKeys = Object.keys(components);
+  var compValues = Object.values(components);
+  var linked = {};
+
+  var _loop = function _loop(k) {
+    var comp = mapping[k];
+    var i = compValues.findIndex(function (x) {
+      return x === comp;
+    });
+    i === -1 && console.warn(k + ' is missing');
+    linked[k] = compKeys[i];
+  };
+
+  for (var k in mapping) {
+    _loop(k);
+  }
+  return linked;
+}
 
 function outerDom(outerHTML) {
   var mapping = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -20,13 +45,14 @@ function outerDom(outerHTML) {
   var dom = str2dom(outerHTML, rootSelector);
   (typeof mapping === 'undefined' ? 'undefined' : _typeof(mapping)) === 'object' && Object.keys(mapping).forEach(function (k) {
     var comp = mapping[k];
-    var els = [];
+    if (typeof comp !== 'string') {
+      return;
+    }
     try {
-      els = dom.querySelectorAll(k);
+      dom.querySelectorAll(k).forEach(function (el) {
+        return el.setAttribute(VTD.COMPONENT, kebab(comp));
+      });
     } catch (err) {}
-    els.forEach(function (n) {
-      n.setAttribute(VTD.COMPONENT, typeof comp === 'string' ? kebab(comp) : kebab(comp.name));
-    });
   });
   return dom;
 }
@@ -100,7 +126,7 @@ function dom2render(h, el) {
 function render(h, tag, opts, children) {
   try {
     return children ? h(tag, opts, children) : h(tag, opts);
-  } catch (error) {
+  } catch (err) {
     console.error(err);
     var el = document.createElement(tag);
     el.setAttribute([VTD.FAILURE], '');
@@ -118,15 +144,27 @@ var VueTopDown = {
   data: function data() {
     var _ref;
 
-    return _ref = {}, _defineProperty$1(_ref, VTD.ROOT, '*'), _defineProperty$1(_ref, VTD.MAPPING, {}), _defineProperty$1(_ref, VTD.RENDER, null), _ref;
+    return _ref = {}, _defineProperty$1(_ref, VTD.ROOT, '*'), _defineProperty$1(_ref, VTD.MAPPING, {}), _defineProperty$1(_ref, VTD.RENDER, null), _defineProperty$1(_ref, VTD.OUTER_DOM, null), _defineProperty$1(_ref, VTD.LIMIT, 0), _ref;
   },
+
+  computed: _defineProperty$1({}, VTD.OUTER_DOM, function () {
+    var outerHTML = this.$props[VTD.OUTER_HTML] ? this.$props[VTD.OUTER_HTML] : this.$el.outerHTML;
+    var mapping = linkMapping(this.$data[VTD.MAPPING], this.$options.components);
+    return outerDom(outerHTML, mapping, this.$data[VTD.ROOT]);
+  }),
   render: function render(h) {
-    if (this.$data[VTD.RENDER]) {
+    var _this = this;
+
+    if (this.$data[VTD.LIMIT] > 1000) {
+      console.warn('Too many times for render function to be called');
+      setTimeout(function () {
+        _this.$data[VTD.LIMIT] = 0;
+      }, 60000);
       return this.$data[VTD.RENDER];
     }
-    var outerHTML = this[VTD.OUTER_HTML] ? this[VTD.OUTER_HTML] : this.$el.outerHTML;
-    var od = outerDom(outerHTML, this.$data[VTD.MAPPING], this.$data[VTD.ROOT]);
-    this.$data[VTD.RENDER] = dom2render(h, od);
+    this.$data[VTD.LIMIT] += 1;
+    this.$data[VTD.RENDER] = dom2render(h, this[VTD.OUTER_DOM]);
+    // debugObj(this.$data[VTD.RENDER])
     return this.$data[VTD.RENDER];
   }
 };
