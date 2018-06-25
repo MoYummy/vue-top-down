@@ -72,7 +72,7 @@ export function dom2render (h, el, depth = 0) {
   if (vueComponent) {
     return render(h, vueComponent, {
       props: {
-        [VTD.OUTER_HTML]: el.outerHTML,
+        [VTD.OUTER_HTML]: el.outerHTML.replace(new RegExp(VTD.COMPONENT + '[^"]*"[^"]*"', 'i'), ''),
         [VTD.CLASS]: (el.getAttribute('class') || '').split(' '),
         [VTD.STYLE]: el.getAttribute('style')
       }
