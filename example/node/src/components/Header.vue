@@ -11,7 +11,7 @@
 import { VueTopDownItem } from 'vue-top-down'
 
 export default {
-  name: 'HeaderComp',
+  name: 'Header',
   mixins: [VueTopDownItem],
   computed: {
     routes () {

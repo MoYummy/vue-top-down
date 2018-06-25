@@ -6,7 +6,7 @@
 import { VueTopDownItem, VTDConstants } from 'vue-top-down'
 
 export default {
-  name: 'ContentComp',
+  name: 'Content',
   mixins: [VueTopDownItem],
   computed: {
     innerHTML () {

@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import router from './router'
 import { VueTopDown, VTDConstants } from 'vue-top-down'
-const HeaderComp = () => import('./components/HeaderComp')
-const FooterComp = () => import('./components/FooterComp')
-const ContentComp = () => import('./components/ContentComp')
+const HeaderComp = () => import('./components/Header')
+const MiddleComp = () => import('./components/MiddleComp')
+const FooterComp = () => import('./components/Footer')
+
+Vue.config.devtools = true
 
 new Vue({
   router,
@@ -11,14 +13,14 @@ new Vue({
   components: {
     HeaderComp,
     FooterComp,
-    ContentComp
+    MiddleComp
   },
   data () {
     return {
       [VTDConstants.MAPPING]: {
         'header': HeaderComp,
         'footer': FooterComp,
-        '.content': ContentComp
+        '.middle': MiddleComp
       }
     }
   }

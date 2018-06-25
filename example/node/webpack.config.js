@@ -3,6 +3,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   mode: 'production',
@@ -63,7 +64,12 @@ module.exports = {
     splitChunks: {
       chunks: 'all'
     },
-    minimize: true
+    minimize: true,
+    minimizer: [
+      new UglifyJsPlugin({
+        extractComments: true
+      })
+    ]
   },
   resolve: {
     alias: {

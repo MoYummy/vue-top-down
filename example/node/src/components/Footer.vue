@@ -6,7 +6,7 @@
 import { VueTopDownItem } from 'vue-top-down'
 
 export default {
-  name: 'FooterComp',
+  name: 'Footer',
   mixins: [VueTopDownItem],
   data () {
     return {

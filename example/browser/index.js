@@ -42,6 +42,21 @@ const ContentComp = {
   }
 }
 
+const MiddleComp = {
+  name: 'MiddleComp',
+  mixins: [VueTopDown],
+  components: {
+    ContentComp
+  },
+  data () {
+    return {
+      [VTDConstants.MAPPING]: {
+        '.content': ContentComp
+      }
+    }
+  }
+}
+
 const HelloVue = {
   template: `<div :class="clazz">Hello Vue</div>`,
   props: ['clazz'],
@@ -68,14 +83,14 @@ const inst = new Vue({
   components: {
     HeaderComp,
     FooterComp,
-    ContentComp
+    MiddleComp
   },
   data () {
     return {
       [VTDConstants.MAPPING]: {
         'header': HeaderComp,
         'footer': FooterComp,
-        '.content': ContentComp
+        '.middle': MiddleComp
       }
     }
   }
