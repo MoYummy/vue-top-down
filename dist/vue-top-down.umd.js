@@ -158,7 +158,7 @@
     data: function data() {
       var _ref;
 
-      return _ref = {}, _defineProperty$1(_ref, VTD.ROOT, '*'), _defineProperty$1(_ref, VTD.MAPPING, {}), _defineProperty$1(_ref, VTD.RENDER, null), _defineProperty$1(_ref, VTD.OUTER_DOM, null), _defineProperty$1(_ref, VTD.LIMIT, 0), _ref;
+      return _ref = {}, _defineProperty$1(_ref, VTD.ROOT, '*'), _defineProperty$1(_ref, VTD.MAPPING, {}), _defineProperty$1(_ref, VTD.RENDER, null), _ref;
     },
 
     computed: _defineProperty$1({}, VTD.OUTER_DOM, function () {
@@ -167,14 +167,7 @@
       return outerDom(outerHTML, mapping, this.$data[VTD.ROOT]);
     }),
     render: function render(h) {
-      if (this.$data[VTD.LIMIT] > 1e2) {
-        console.warn('Too many times for render function to be called');
-        return this.$data[VTD.RENDER];
-      }
       var r = dom2render(h, this[VTD.OUTER_DOM]);
-      this.$nextTick(function () {
-        // debugObj(this.$data[VTD.RENDER])
-      });
       return r;
     }
   };
