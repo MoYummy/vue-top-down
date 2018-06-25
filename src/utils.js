@@ -15,6 +15,7 @@ export function linkMapping (mapping = {}, components = {}) {
 
 export function outerDom (outerHTML, mapping = {}, rootSelector = '*') {
   const dom = str2dom(outerHTML, rootSelector)
+  dom.removeAttribute(VTD.COMPONENT)
   typeof mapping === 'object' && Object.keys(mapping).forEach(k => {
     const comp = mapping[k]
     if (typeof comp !== 'string') {
