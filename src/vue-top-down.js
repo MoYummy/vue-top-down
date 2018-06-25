@@ -1,4 +1,4 @@
-import { linkMapping, outerDom, dom2render, debugObj } from './utils'
+import { linkMapping, outerDom, dom2render } from './utils'
 import VTD from './constants'
 
 const VueTopDown = {
@@ -12,9 +12,7 @@ const VueTopDown = {
     return {
       [VTD.ROOT]: '*',
       [VTD.MAPPING]: {},
-      [VTD.RENDER]: null,
-      [VTD.OUTER_DOM]: null,
-      [VTD.LIMIT]: 0
+      [VTD.RENDER]: null
     }
   },
   computed: {
@@ -25,14 +23,7 @@ const VueTopDown = {
     }
   },
   render (h) {
-    if (this.$data[VTD.LIMIT] > 1e2) {
-      console.warn('Too many times for render function to be called')
-      return this.$data[VTD.RENDER]
-    }
     const r = dom2render(h, this[VTD.OUTER_DOM])
-    this.$nextTick(() => {
-      // debugObj(this.$data[VTD.RENDER])
-    })
     return r
   }
 }
