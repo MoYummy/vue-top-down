@@ -50,6 +50,7 @@ function outerDom(outerHTML) {
   var rootSelector = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '*';
 
   var dom = str2dom(outerHTML, rootSelector);
+  dom.removeAttribute(VTD.COMPONENT);
   (typeof mapping === 'undefined' ? 'undefined' : _typeof(mapping)) === 'object' && Object.keys(mapping).forEach(function (k) {
     var comp = mapping[k];
     if (typeof comp !== 'string') {
