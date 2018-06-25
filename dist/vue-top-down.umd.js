@@ -121,7 +121,7 @@
       var _props;
 
       return render(h, vueComponent, {
-        props: (_props = {}, _defineProperty(_props, VTD.OUTER_HTML, el.outerHTML), _defineProperty(_props, VTD.CLASS, (el.getAttribute('class') || '').split(' ')), _defineProperty(_props, VTD.STYLE, el.getAttribute('style')), _props)
+        props: (_props = {}, _defineProperty(_props, VTD.OUTER_HTML, el.outerHTML.replace(new RegExp(VTD.COMPONENT + '[^"]*"[^"]*"', 'i'), '')), _defineProperty(_props, VTD.CLASS, (el.getAttribute('class') || '').split(' ')), _defineProperty(_props, VTD.STYLE, el.getAttribute('style')), _props)
       });
     }
 
