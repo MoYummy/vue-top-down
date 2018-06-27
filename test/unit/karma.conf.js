@@ -43,7 +43,10 @@ module.exports = function (config) {
       reporters: [
         // { type: 'lcov', subdir: '.' },
         { type: 'text-summary' }
-      ]
+      ],
+      instrumenterOptions: {
+        istanbul: { noCompact: true }
+      }
     },
 
     singleRun: true,

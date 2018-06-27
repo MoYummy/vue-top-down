@@ -1,3 +1,4 @@
+<script>
 import { VueTopDown, VTDConstants as VTD } from 'vue-top-down'
 import ContentComp from './Content'
 
@@ -14,3 +15,4 @@ export default {
     }
   }
 }
+</script>

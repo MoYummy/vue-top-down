@@ -44,7 +44,7 @@ describe ('utils', () => {
       expect(domEqual(outerDom.outerHTML, input.outerHTML)).to.equal(true)
     })
 
-    it ('should add attribte for component', () => {
+    it ('should add attribute for component', () => {
       input.outerHTML = '<div><div class=comp></div></div>'
       input.mapping = { '.comp': 'SomeComponent' }
       const outerDom = utils.outerDom(input.outerHTML, input.mapping, input.rootSelector)
